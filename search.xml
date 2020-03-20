@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>post</title>
-    <url>/2020/03/20/post/</url>
-    <content><![CDATA[]]></content>
+    <title>Pandas入门</title>
+    <url>/2020/03/20/Pandas%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h1 id="Pandas"><a href="#Pandas" class="headerlink" title="Pandas"></a>Pandas</h1><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Pandas中的基础数据类型有Series和DataFrame，其中，Series具有一维索引（行索引），DataFrame具有二维索引（行索引和列索引）。</p>
+<h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><p>既然是一维索引，就要有key,value对，可以直接传入一个dict。通过一个key，就可以确定一个value。<br><code>s = pd.Series({&#39;a&#39;: 10, &#39;b&#39;: 20, &#39;c&#39;: 30})</code></p>
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><p>需要行和列才可以确定一个元素。<br>可以按列传入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">12df &#x3D; pd.DataFrame(&#123;&#39;one&#39;: pd.Series([1, 2, 3]),</span><br><span class="line">                   &#39;two&#39;: pd.Series([4, 5, 6])&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>也可以按行传入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">123df &#x3D; pd.DataFrame([&#123;&#39;one&#39;: 1, &#39;two&#39;: 4&#125;,</span><br><span class="line">                   &#123;&#39;one&#39;: 2, &#39;two&#39;: 5&#125;,</span><br><span class="line">                   &#123;&#39;one&#39;: 3, &#39;two&#39;: 6&#125;])</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h2><p><a href="https://pandas.pydata.org/pandas-docs/stable/reference/io.html" target="_blank" rel="noopener">Input/output — pandas 1.0.1 documentation</a></p>
+<h3 id="读取csv"><a href="#读取csv" class="headerlink" title="读取csv"></a>读取csv</h3><p><code>f = pd.read_csv()</code><br><img src="/" alt class="lazyload" data-src="/2020/03/20/Pandas%E5%85%A5%E9%97%A8/1.png"></p>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><ul>
+<li><code>df.head()</code>显示文件头部</li>
+<li><code>df.tail()</code>显示文件尾部</li>
+<li><code>df.describe()</code>显示数据概览</li>
+<li><code>df.values</code>将DataFrame转换为numpy数组</li>
+<li><code>df.index</code>行索引</li>
+<li><code>df.columns</code>列索引</li>
+<li><code>df.shape</code>DataFrame形状<br>所有属性：<a href="https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#attributes-and-underlying-data" target="_blank" rel="noopener">DataFrame — pandas 1.0.1 documentation</a></li>
+</ul>
+<h2 id="数据选择"><a href="#数据选择" class="headerlink" title="数据选择"></a>数据选择</h2><p>数据选择就是将原始数据中的一部分拿出来，用于后续处理步骤</p>
+<h3 id="基于索引数字选择"><a href="#基于索引数字选择" class="headerlink" title="基于索引数字选择"></a>基于索引数字选择</h3><ul>
+<li><code>df.iloc[:3]</code> 选择前三行</li>
+<li><code>df.iloc[5]</code>选择某一行</li>
+<li><code>df.iloc[[行], [列]]</code> 其中，行和列都可以是list</li>
+<li><code>df.iloc[:，1:4]</code>选择2到4列（切片时左闭右开）</li>
+</ul>
+<h3 id="基于标签的选择-切片时左右都闭"><a href="#基于标签的选择-切片时左右都闭" class="headerlink" title="基于标签的选择(切片时左右都闭)"></a>基于标签的选择(切片时左右都闭)</h3><ul>
+<li><code>df.loc[0:2]</code>选择前三行</li>
+<li><code>df.loc[[0,2,4]]</code>选择1、3、5行</li>
+<li><code>df.loc[:,&#39;Total Population&#39;:&#39;Total Males&#39;]</code></li>
+<li><code>df.loc[[0, 2], &#39;Median Age&#39;:]</code>选择1、3行的’Median Age’后面的列</li>
+</ul>
+<h3 id="数据删减"><a href="#数据删减" class="headerlink" title="数据删减"></a>数据删减</h3><ul>
+<li><p><code>df.drop(labels=[&#39;Median Age&#39;, &#39;Total Males&#39;], axis = 1)</code>删除两个指定列</p>
+</li>
+<li><p><code>df.drop(labels=[0, 1], axis = 0)</code>删除0、1行</p>
+</li>
+<li><p><code>df.drop_dupicates()</code>数据去重</p>
+</li>
+<li><p><code>df.dropna()</code>数据去空值</p>
+</li>
+<li><p><code>df.insert(value = 要插入的值, loc=列号，column = &#39;列名&#39;)</code>在DataFrame中插入名字叫’列名’，值为value的一列。</p>
+</li>
+<li><p><code>df.isna()</code>返回bool</p>
+</li>
+<li><p><code>df.notna()</code>返回bool列表<br>填充缺失值</p>
+</li>
+<li><p><code>df.fillna()</code></p>
+</li>
+<li><p><code>df.fillna(method=&#39;pad&#39;)</code>使用前面的值填充空值</p>
+</li>
+<li><p>‘df.fillna(method=‘bfill’)’使用后面的值填充</p>
+</li>
+<li><p><code>df.fillna(df.mean()[&#39;C&#39;:&#39;E&#39;])</code>使用平均值填充<br>插值填充</p>
+</li>
+<li><pre><code>df.interpolate(method=)</code></pre><ul>
+<li><code>method=&#39;quadratic&#39;</code>数据增长速率越来越快</li>
+<li><code>method=&#39;pchip&#39;</code>累计分布</li>
+<li><code>method=&#39;akima&#39;</code>以平滑绘图为目的<br>绘图</li>
+</ul>
+</li>
+<li><p>df.plot(kind=‘bar’…)直接绘图<br>其它</p>
+</li>
+<li><p>数据计算 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#binary-operator-functions" target="_blank" rel="noopener">DataFrame — pandas 1.0.1 documentation</a></p>
+</li>
+<li><p>数据聚合 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#function-application-groupby-window" target="_blank" rel="noopener">DataFrame — pandas 1.0.1 documentation</a></p>
+</li>
+<li><p>统计分析 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#computations-descriptive-stats" target="_blank" rel="noopener">DataFrame — pandas 1.0.1 documentation</a></p>
+</li>
+<li><p>时间序列 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#time-series-related" target="_blank" rel="noopener">DataFrame — pandas 1.0.1 documentation</a></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Pandas</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
