@@ -1,27 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>深度学习之神经网络的结构</title>
-    <url>/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/</url>
+    <title>深度学习之梯度下降法 Part2</title>
+    <url>/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%20Part2/</url>
+    <content><![CDATA[<p>在Part1中，我们定义了一个用于识别手写数字的神经网络，而现在，我们需要看一看如何训练其中的weight，使得网络可以最好地对这些图片进行分类。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>首先我们需要一个指标来衡量当前网络中的weight能够多准确地完成数字图片的分类。损失函数做的就是这样一件事情：</p>
+<p>$Cost(w) = $权重多烂</p>
+<p>$w$是咱们网络中的所有权重数值，将$w$输入损失函数，它输出一个数值告诉我们，当前的权重到底有多烂。那么损失函数是怎样被implement的呢？让我们来康康：</p>
+<p><img src="/" alt="1" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%20Part2/1.png"></p>
+<p>如上图所示，我们可以通过计算每个结点输出的结果与其应该有的正确值的平方和的总和来得知当前权重的糟糕程度。</p>
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>然鹅，知道了糟糕程度，我们如何据此调整权重，让结果不那么糟糕呢？这时候就要用到梯度下降。</p>
+<p><img src="/" alt="2" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%20Part2/2.png"></p>
+<p>之所以叫梯度下降，是因为这个方法用到了梯度。我们知道，某个函数的某一点的梯度方向事实上是这个函数在这一点的数值上升得最快的方向。利用这一性质，我们计算损失函数的梯度，然后往反方向走，就是使得损失函数下降最快的方向。而梯度下降，事实上就是不停地重复以下过程：</p>
+<ul>
+<li>计算损失函数在某一点的梯度</li>
+<li>向梯度相反的方向更新权重</li>
+</ul>
+<p><img src="/" alt="3" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%20Part2/3.png"><br>事实上，梯度的正负，告诉我们往哪个方向走可以使得我们获得更小的cost，而梯度的大小则告诉我们每一项对于梯度大小变化的影响程度大小。比如某一项的梯度大，那么更新它相比于更新别人更能使得计算出的损失值发生变化。</p>
+<h2 id="额外资料"><a href="#额外资料" class="headerlink" title="额外资料"></a>额外资料</h2><p>在关心机器怎么学习之前，咱们先来看看我们自己应该怎么学，这个网页中对训练一个数字图片分类器进行了详细的介绍：<a href="http://neuralnetworksanddeeplearning.com/chap1.html。" target="_blank" rel="noopener">http://neuralnetworksanddeeplearning.com/chap1.html。</a></p>
+<p>视频地址：<a href="https://www.bilibili.com/video/BV1Ux411j7ri" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Ux411j7ri</a></p>
+]]></content>
+      <tags>
+        <tag>3Blue1Brown</tag>
+        <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习之神经网络的结构 Part1</title>
+    <url>/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/</url>
     <content><![CDATA[<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p>假设现在我们要训练一个神经网络来识别手写数字图片。如下图所示，我们使用最为简单的多层感知机(MLP)训练，定义一个输入层，两个隐藏层和一个输出层。我们将28x28的图片“拉直”，因此输入层有784个结点。而输出层的是个结点代表是十个数字中某个数字的可能性。</p>
-<p><img src="/" alt="Screen Shot 2020-03-31 at 12.07.48 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/1.png"></p>
-<h2 id="网络输入"><a href="#网络输入" class="headerlink" title="网络输入"></a>网络输入</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.08.41 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/2.png"></p>
+<p><img src="/" alt="Screen Shot 2020-03-31 at 12.07.48 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/1.png"></p>
+<h2 id="网络输入"><a href="#网络输入" class="headerlink" title="网络输入"></a>网络输入</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.08.41 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/2.png"></p>
 <p>输入值是图片中某个像素的灰度，取值范围在[0,1]，0代表全黑，1代表全白，输入某个结点的数值叫做激活值（Activation）。</p>
 <h2 id="为什么我们需要隐藏层？"><a href="#为什么我们需要隐藏层？" class="headerlink" title="为什么我们需要隐藏层？"></a>为什么我们需要隐藏层？</h2><p>那么为什么我们需要搞很多层而不是就只有一个隐藏层呢？</p>
-<p><img src="/" alt="Screen Shot 2020-03-31 at 12.10.56 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/3.png"></p>
-<p><img src="/" alt="Screen Shot 2020-03-31 at 12.11.20 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/4.png">  </p>
+<p><img src="/" alt="Screen Shot 2020-03-31 at 12.10.56 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/3.png"></p>
+<p><img src="/" alt="Screen Shot 2020-03-31 at 12.11.20 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/4.png">  </p>
 <p>先来看一看这些数字，他们各自由一些笔画组成。</p>
-<p><img src="/" alt="Screen Shot 2020-03-31 at 12.11.37 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/5.png"></p>
+<p><img src="/" alt="Screen Shot 2020-03-31 at 12.11.37 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/5.png"></p>
 <p>对于隐藏层中的结点来说，也许每个结点负责一种笔划的判断。而我们放置多个隐藏层，就可以组合判断多种笔划，达到识别数字的目的。</p>
-<h2 id="权重是用来干什么的？"><a href="#权重是用来干什么的？" class="headerlink" title="权重是用来干什么的？"></a>权重是用来干什么的？</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.13.10 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/6.png"></p>
+<h2 id="权重是用来干什么的？"><a href="#权重是用来干什么的？" class="headerlink" title="权重是用来干什么的？"></a>权重是用来干什么的？</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.13.10 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/6.png"></p>
 <p>权重其实决定了某个结点的值受上一层中各结点的影响程度。在这个例子中，就是某数字由各笔划组成的程度。</p>
-<h2 id="激活函数的作用"><a href="#激活函数的作用" class="headerlink" title="激活函数的作用"></a>激活函数的作用</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.15.27 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/7.png"></p>
+<h2 id="激活函数的作用"><a href="#激活函数的作用" class="headerlink" title="激活函数的作用"></a>激活函数的作用</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.15.27 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/7.png"></p>
 <p>这是一个Sigmoid函数，它是一个最为Basic的激活函数，将范围为负无穷到正无穷的输入映射到范围为(0,1)的输出。</p>
-<h2 id="放在一起观察"><a href="#放在一起观察" class="headerlink" title="放在一起观察"></a>放在一起观察</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.16.44 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/8.png"></p>
-<p>放在一起看，权重决定某神经元关注上一层的哪些神经元，而bias决定了加权和需要多大，才可以激活此神经元。而激活函数事实上衡量了加权和到底有多正。<img src="/" alt="Screen Shot 2020-03-31 at 12.18.37 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/9.png"></p>
+<h2 id="放在一起观察"><a href="#放在一起观察" class="headerlink" title="放在一起观察"></a>放在一起观察</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.16.44 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/8.png"></p>
+<p>放在一起看，权重决定某神经元关注上一层的哪些神经元，而bias决定了加权和需要多大，才可以激活此神经元。而激活函数事实上衡量了加权和到底有多正。<img src="/" alt="Screen Shot 2020-03-31 at 12.18.37 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/9.png"></p>
 <p>需要注意的是，某层上某个结点的值是其上一层结点值的加权和，因此对于第二层的每个结点来说，其都有对应的784个权重，而每个结点又都有一个bias，因此对于第二层的所有结点来说，总共有784x16个weight以及16个bias。</p>
-<h2 id="常用的激活函数"><a href="#常用的激活函数" class="headerlink" title="常用的激活函数"></a>常用的激活函数</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.22.08 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84/10.png"></p>
+<h2 id="常用的激活函数"><a href="#常用的激活函数" class="headerlink" title="常用的激活函数"></a>常用的激活函数</h2><p><img src="/" alt="Screen Shot 2020-03-31 at 12.22.08 PM" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84%20Part1/10.png"></p>
 <p>激活函数的任务事实上是模拟人脑中的神经元，在输入达到某种数值时，才向后输出。实验表明，Sigmoid函数的激活效果并不好。与其相比，Relu的激活</p>
+<p>原视频链接：<a href="https://www.bilibili.com/video/BV1bx411M7Zx" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1bx411M7Zx</a></p>
 ]]></content>
       <tags>
         <tag>3Blue1Brown</tag>
