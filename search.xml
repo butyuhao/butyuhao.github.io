@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>利用反向传播训练多层神经网络的原理</title>
+    <url>/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>文本详细描述了使用<em>后向传播</em>算法训练神经网络的过程。如下图所示，我们使用一个三层神经网络来描述这个过程，它有两个输入，一个输出：</p>
+<p><img src="/" alt="img01" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img01.gif"></p>
+<p>每个神经元由两部分组成，第一部分将输入信号与权重分别相乘然后求和。第二部分使用一个非线性函数（激活函数）对第一部分产生的信号进行非线性变换。信号$e$是第一部分（加法器）的输出信号，$y=f(e)$是第二部分（非线性变换）的输出信号。信号$y$也是整个神经元的输出。</p>
+<p><img src="/" alt="img01b" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img01b.gif"></p>
+<p>想要训练神经网络，我们首先需要数据集。每个训练数据包含输入信号($x_1$和$x_2$)以及对应的标签(期望的输出$z$)。神经网络的训练需要迭代进行。在每次迭代中，结点的权重系数($w_1$和$w_2$)都根据新的训练数据被更新。更新的数值大小使用以下算法确定：每个训练步骤都是从两个输入信号开始的。在这之后，可以根据输入信号确定每一层结点的输出信号值。下方图片展示了信号是如何在神经网络中传播，符号$w_{(xm)n}$表示在输入层中，输入$x_m$与神经元$n$之间的权重连接。符号$y_n$表示神经元$n$的输出信号。</p>
+<p><img src="/" alt="img02" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img02.gif"></p>
+<p><img src="/" alt="img03" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img03.gif"></p>
+<p><img src="/" alt="img04" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img04.gif"></p>
+<p>下图展示信号在隐藏层中传播。符号$w_{mn}$代表神经元$m$的输出与下一层中的神经元$n$的输入间的连接权重。</p>
+<p><img src="/" alt="img05" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img05.gif"></p>
+<p><img src="/" alt="img05" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img06.gif"></p>
+<p>下图展示信号在输出层中传播。</p>
+<p><img src="/" alt="img07" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img07.gif"></p>
+<p>在算法的下一个步骤中，网络的输出信号$y$被拿来与期望的输出值$z$进行比较，$z$就是前文中所述的，由数据集提供的标签。差值被称作是输出层神经元的误差信号$\delta$。</p>
+<p><img src="/" alt="img08" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img08.gif"></p>
+<p>我们并不可能直接计算内层神经元的误差信号，因为这些神经元的输出值是未知的。多年来，人们都不知道如何有效训练多层神经网络。直到上世纪80年代中期，后向传播算法才被人们发现。该算法的思想是将误差信号$\delta$(单步训练中得出)往后传播回所有神经元，将输出信号作为他们的输入。</p>
+<p><img src="/" alt="img09" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img09.gif"></p>
+<p><img src="/" alt="img09" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img10.gif"></p>
+<p>用来计算误差的权重系数$w_{mn}$和训练时得出的那个一致。这边仅仅是数据流被改变(信号被一个接一个地从输出方向传播到输入方向)。这个方法在所有网络层上应用。当误差来自多个神经元时，总误差是这些误差的和。示意图如下：</p>
+<p><img src="/" alt="img11" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img11.gif"></p>
+<p><img src="/" alt="img12" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img12.gif"></p>
+<p><img src="/" alt="img11" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img13.gif"></p>
+<p>当误差信号计算完毕时，我们使用计算出的误差信号更新网络权重。在下方公式中，${df_1(e)\over{de}}$代表激活函数的导数，$w’$代表$w$更新后的值。</p>
+<p><img src="/" alt="img14" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img14.gif"></p>
+<p><img src="/" alt="img15" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img15.gif"></p>
+<p><img src="/" alt="img16" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img16.gif"></p>
+<p><img src="/" alt="img17" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img17.gif"></p>
+<p><img src="/" alt="img18" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img18.gif"></p>
+<p><img src="/" alt="img19" class="lazyload" data-src="/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/img19.gif"></p>
+<p>系数$\eta$影响网络的学习速率。对于选择合适的学习速率，有几种技巧可以使用。第一种技巧是一开始使用一个较大的学习速率，然后渐渐递减。第二种方法更为复杂，一开始选用一个小的系数，随着训练的进行逐渐升大，然后在最后阶段再次减小。以低速率开始有利于确定权重的符号。</p>
+<p>原文链接:<a href="http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html" target="_blank" rel="noopener">http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html</a></p>
+]]></content>
+      <tags>
+        <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习之反向传播算法 Part3</title>
+    <url>/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/</url>
+    <content><![CDATA[<p>在看反向传播的过程中，我们先intuitice地看一遍过程，然后再看具体的公式。</p>
+<h2 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h2><p>后向传播就是衡量前层对后层的影响使得梯度下降时，能够根据影响来调整权重大小。</p>
+<p><img src="/" alt="1" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/1.png"></p>
+<p>首先让我们看一下损失函数，通过Part2中的损失函数，我们可以计算出每个输出结点的误差。现在，让我们只看一个结点的误差情况。如下图所示，通过将该结点的loss和上一层的每个结点到该结点的权重相乘，可以得出每个权重需要修正的方向及大小。loss大小代表误差大小，更新前的weight大小代表当前情况下上一层每个结点对输出层中的这个结点的影响大小，而正负则决定了权重更新的方向。</p>
+<p>![2](/Users/butyuhao/OneDrive - smail.shnu.edu.cn/blog/source/_posts/深度学习之反向传播算法 Part3/2.png)</p>
+<p>然而，上面只是考虑到一个输出结点的情况。因为我们的输出层上有十个结点，因此我们需要考虑他们各自的更新需求，然后将十个结点的更新需求求和取平均就是当前输入的这张图片在这次更新中最终需要更新的数值大小。</p>
+<p><img src="/" alt="3" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/3.png"></p>
+<p>数据集中并不是只有当前输入的一张图片，还应该计算每一张图片的更新需求，如下图所示，将数据集中每张图片对权重的更新需求取平均作为整个数据集在这一轮更新中对权重的更新大小。</p>
+<p><img src="/" alt="4" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/4.png"></p>
+<h2 id="具体公式"><a href="#具体公式" class="headerlink" title="具体公式"></a>具体公式</h2><p>假设每一层都只有一个结点，那么让我们来看第L层（图中的L层是输出层）和第L-1层的情况。右上角中，是Cost、激活前的数值和激活后的数值，$z()$是激活函数。左下角的图片表示他们的关系。此时我们关心，$w(L)$变动会在多大程度上影响$C_0$。</p>
+<p><img src="/" alt="7" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/7.png"></p>
+<p>其实$C_0$对$w(L)$的偏导数表示的就是$w(L)$的变动会在多大程度上影响$C_0$。如下图所示，我们可以根据链式求导法则，将其进行变换。</p>
+<p><img src="/" alt="6" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/6.png"></p>
+<p>稍微变换上述公式，我们就可以得到bias对$C_0$的影响：</p>
+<p><img src="/" alt="8" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/8.png"></p>
+<p>最后让我们来看一下梯度公式：</p>
+<p><img src="/" alt="9" class="lazyload" data-src="/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%20Part3/9.png"></p>
+<p>视频地址：<a href="https://www.bilibili.com/video/BV16x411V7Qg?p=2" target="_blank" rel="noopener">https://www.bilibili.com/video/BV16x411V7Qg?p=2</a></p>
+<p>事实上，该视频较为适合在微观层面上理解后向传播机制，如果想要有更加全面而整体的把握，非常推荐阅读这篇文章：<a href="http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html" target="_blank" rel="noopener">http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html</a>  </p>
+<p>当然，我也提供了翻译版本：利用反向传播训练多层神经网络的原理。</p>
+]]></content>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>3Blue1Brown</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>深度学习之梯度下降法 Part2</title>
     <url>/2020/03/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%20Part2/</url>
     <content><![CDATA[<p>在Part1中，我们定义了一个用于识别手写数字的神经网络，而现在，我们需要看一看如何训练其中的weight，使得网络可以最好地对这些图片进行分类。</p>
@@ -21,8 +89,8 @@
 <p>视频地址：<a href="https://www.bilibili.com/video/BV1Ux411j7ri" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Ux411j7ri</a></p>
 ]]></content>
       <tags>
-        <tag>3Blue1Brown</tag>
         <tag>深度学习</tag>
+        <tag>3Blue1Brown</tag>
       </tags>
   </entry>
   <entry>
@@ -50,8 +118,8 @@
 <p>原视频链接：<a href="https://www.bilibili.com/video/BV1bx411M7Zx" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1bx411M7Zx</a></p>
 ]]></content>
       <tags>
-        <tag>3Blue1Brown</tag>
         <tag>深度学习</tag>
+        <tag>3Blue1Brown</tag>
       </tags>
   </entry>
   <entry>
