@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CMake基础</title>
+    <url>/2020/04/13/CMake%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h3><p>该文件保存所有CMake命令，挡在shell中运行cmake时，它将寻找该txt文件，如果找不到，cmake将报错并退出。</p>
+<h3 id="最低CMake版本"><a href="#最低CMake版本" class="headerlink" title="最低CMake版本"></a>最低CMake版本</h3><p>用户可以指定可运行CMakeLists.txt文件的最低CMake版本，通过以下语句指定：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">cmake_minimun_required(VERSION <span class="number">3.5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="项目名称"><a href="#项目名称" class="headerlink" title="项目名称"></a>项目名称</h3><p>通过指定项目名称，使得指定变量变得更加容易。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">project</span>(hello_cmake)</span><br></pre></td></tr></table></figure>
+
+<p>PS:当采用该命令指定项目名称后，自动添加一个变量${PROJECT_NAME}，其值就是指定的项目名称hello_cmake。</p>
+<h3 id="创建可执行文件"><a href="#创建可执行文件" class="headerlink" title="创建可执行文件"></a>创建可执行文件</h3><p><code>add_executable()</code>明确了可执行文件应该从哪些源文件(source file)中被构建(build)。该命令含有两个参数，第一个参数是要构建的可执行文件的名称，第二个参数是将要被编译的源文件的列表。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(hello_cmake main.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>将上面的三步合起来，就是：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>)</span><br><span class="line"><span class="keyword">project</span> (hello_cmake)</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Binary-Directory"><a href="#Binary-Directory" class="headerlink" title="Binary Directory"></a>Binary Directory</h3><p>运行cmake指令的文件夹就是Binary Directory，该文件夹用于存放cmake build出的各种文件，该文件夹的路径保存在<code>CMAKE_BINARY_DIR</code>中。通常CMake支持两种build方式：</p>
+<ul>
+<li><h4 id="In-Place-Build"><a href="#In-Place-Build" class="headerlink" title="In-Place Build"></a>In-Place Build</h4></li>
+</ul>
+<p>该方式直接在存放代码的文件夹运行cmake，由于生成的文件会和代码文件混在一起，通常不采用这种方式。</p>
+<ul>
+<li><h4 id="Out-of-Source-Build"><a href="#Out-of-Source-Build" class="headerlink" title="Out-of-Source Build"></a>Out-of-Source Build</h4></li>
+</ul>
+<p>该方式在代码所在目录中新建一个叫做build的文件夹，然后在里头进行cmake的build工作，这样可以很方便地管理build过程中产生的各种文件。通常这么做：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>CMake</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>利用反向传播训练多层神经网络的原理</title>
     <url>/2020/04/01/%E5%88%A9%E7%94%A8%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%AE%AD%E7%BB%83%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>文本详细描述了使用<em>后向传播</em>算法训练神经网络的过程。如下图所示，我们使用一个三层神经网络来描述这个过程，它有两个输入，一个输出：</p>
