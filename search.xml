@@ -101,6 +101,67 @@
 <h3 id="链接库"><a href="#链接库" class="headerlink" title="链接库"></a>链接库</h3><p>当创建的可执行文件需要用到某个库的时候，你必须使用以下语句来告诉编译器：</p>
 <figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(hello_binary</span><br><span class="line">    src/main.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( hello_binary</span><br><span class="line">    PRIVATE</span><br><span class="line">        hello_library</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
+<h2 id="动态库"><a href="#动态库" class="headerlink" title="动态库"></a>动态库</h2><h3 id="添加动态库"><a href="#添加动态库" class="headerlink" title="添加动态库"></a>添加动态库</h3><p>与之前静态库的例子类似，<code>add_library()</code>函数可以用来将一些源文件创建为动态库，像是这样调用：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(hello_library SHARED</span><br><span class="line">    src/Hello.cpp</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>上方语句创建一个名为<code>libhello_library.so</code>的动态库，其中包含了指定的源文件。</p>
+<h3 id="目标别名"><a href="#目标别名" class="headerlink" title="目标别名"></a>目标别名</h3><p>见名知意，目标别名就是可以给目标起一个新名字，如下方语句就添加叫做hello_library的库，且给其起了一个别名叫做hello::library。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(hello::library ALIAS hello_library)</span><br></pre></td></tr></table></figure>
+
+<p>如下所示，当将目标与其它目标链接时，可以用别名指代它。</p>
+<h3 id="链接动态库"><a href="#链接动态库" class="headerlink" title="链接动态库"></a>链接动态库</h3><p>链接动态库与链接静态库的方式相同，在创建可执行文件后，将库链接到它。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(hello_binary</span><br><span class="line">    src/main.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(hello_binary</span><br><span class="line">    PRIVATE</span><br><span class="line">        hello::library</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>上方语句让CMake将hello_library链接到hello_binary，且使用hello_library的别名hello::library来指代它。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>CMake允许用户添加一个<code>make install</code>目标来安装二进制文件、库和其它文件。默认的安装位置由<code>CMAKE_INSTALL_PREFIX</code>指定。可由语句<code>cmake .. -DCMAKE_INSTALL_PREFIX=/install/location</code>指定。  </p>
+<p>要安装的文件由<code>install()</code>函数指定：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">install</span> (TARGETS cmake_examples_inst_bin</span><br><span class="line">    DESTINATION bin)</span><br></pre></td></tr></table></figure>
+
+<p>该语句将目标<code>cmake_examples_inst_bin</code>产生的二进制文件安装到<code>${CMAKE_INSTALL_PREFIX}/bin</code>。</p>
+<p>PS：在有DLL目标的平台上，比如windows，你需要运行下方的语句：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">install</span> (TARGETS cmake_examples_inst</span><br><span class="line">    LIBRARY DESTINATION lib</span><br><span class="line">    RUNTIME DESTINATION bin)</span><br></pre></td></tr></table></figure>
+
+<p>使用以下语句来安装与<code>cmake_examples_inst library</code>相对应的头文件到<code>${CMAKE_INSTALL_PREFIX}/include directory</code>。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">install</span> (FILES cmake-examples.conf</span><br><span class="line">    DESTINATION etc)</span><br></pre></td></tr></table></figure>
+
+<p>使用以下语句将配置文件安装到<code>${CMAKE_INSTALL_PREFIX}/etc</code>。</p>
+<p>在运行<code>make install</code>后，CMake产生一个install_manifest.txt文件，其中包含了安装的细节。</p>
+<p>PS：在运行文件前，如果<code>/usr/local/lib</code>如果不在你的library path里头，应该先将其添加到path。</p>
+<p>如果你不想将库安装到默认的<code>/usr/local/</code>,你可以使用以下语句将文件安装到你的build目录。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )</span><br><span class="line">  <span class="keyword">message</span>(STATUS <span class="string">"Setting default CMAKE_INSTALL_PREFIX path to $&#123;CMAKE_BINARY_DIR&#125;/install"</span>)</span><br><span class="line">  <span class="keyword">set</span>(CMAKE_INSTALL_PREFIX <span class="string">"$&#123;CMAKE_BINARY_DIR&#125;/install"</span> CACHE <span class="keyword">STRING</span> <span class="string">"The path to use for make install"</span> FORCE)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="DESTDIR"><a href="#DESTDIR" class="headerlink" title="DESTDIR"></a>DESTDIR</h3><p>如果你想在<code>make install</code>之前确认一下是否所有的文件都包含进去了，可以使用<code>DESTDIR</code>命令：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">make <span class="keyword">install</span> DESTDIR=/tmp/stage</span><br></pre></td></tr></table></figure>
+
+<p>它将会将所有文件安装到你指定的这个文件夹底下，这样你可以在正式安装之前检查一下是否缺少什么东西。</p>
+<h2 id="Build-Type"><a href="#Build-Type" class="headerlink" title="Build Type"></a>Build Type</h2><p>CMake提供了很多build时的配置，用户指定的优化级别以及debug信息将被包含在二进制文件中。</p>
+<p>CMake提供以下级别：</p>
+<ul>
+<li>Release - Adds the <code>-O3 -DNDEBUG</code> flags to the compiler</li>
+<li>Debug - Adds the <code>-g</code> flag</li>
+<li>MinSizeRel - Adds <code>-Os -DNDEBUG</code></li>
+<li>RelWithDebInfo - Adds <code>-O2 -g -DNDEBUG</code> flags</li>
+</ul>
+<h3 id="设置Build-Type"><a href="#设置Build-Type" class="headerlink" title="设置Build Type"></a>设置Build Type</h3><p>你可以使用一个gui工具，例如ccmake或是cmake-gui来改变build type，或者使用以下的语句：</p>
+<p><code>cmake .. -DCMAKE_BUILD_TYPE=Release</code></p>
+<h3 id="设置默认的Build-Type"><a href="#设置默认的Build-Type" class="headerlink" title="设置默认的Build Type"></a>设置默认的Build Type</h3><p>你可以在CMakeLists的顶部添加以下配置来设置默认的Build Type：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">NOT</span> CMAKE_BUILD_TYPE <span class="keyword">AND</span> <span class="keyword">NOT</span> CMAKE_CONFIGURATION_TYPES)</span><br><span class="line">  <span class="keyword">message</span>(<span class="string">"Setting build type to 'RelWithDebInfo' as none was specified."</span>)</span><br><span class="line">  <span class="keyword">set</span>(CMAKE_BUILD_TYPE RelWithDebInfo CACHE <span class="keyword">STRING</span> <span class="string">"Choose the type of build."</span> FORCE)</span><br><span class="line">  <span class="comment"># Set the possible values of build type for cmake-gui</span></span><br><span class="line">  <span class="keyword">set_property</span>(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS <span class="string">"Debug"</span> <span class="string">"Release"</span></span><br><span class="line">    <span class="string">"MinSizeRel"</span> <span class="string">"RelWithDebInfo"</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="Compile-Flags"><a href="#Compile-Flags" class="headerlink" title="Compile Flags"></a>Compile Flags</h2><p>CMake支持使用多种方式来指定编译时的flag。</p>
+<h3 id="为不同目标设置特定Flag"><a href="#为不同目标设置特定Flag" class="headerlink" title="为不同目标设置特定Flag"></a>为不同目标设置特定Flag</h3><p>使用以下语句来使得编译器编译目标时添加-DEX3选项。</p>
+<h3 id="设置默认的C-Flag"><a href="#设置默认的C-Flag" class="headerlink" title="设置默认的C++Flag"></a>设置默认的C++Flag</h3><p>将以下语句添加到CMakeLists来设置默认的C++ Flag。</p>
+<p><code>set (CMAKE_CXX_FLAGS &quot;${CMAKE_CXX_FLAGS} -DEX2&quot; CACHE STRING &quot;Set C++ Compiler Flags&quot; FORCE)</code></p>
+<p>与<code>CMAKE_CXX_FLAGS</code>相似，可以设置以下选项：</p>
+<ul>
+<li><p>Setting C compiler flags using CMAKE_C_FLAGS</p>
+</li>
+<li><p>Setting linker flags using CMAKE_LINKER_FLAGS</p>
+</li>
+</ul>
+<p>PS:上方的<code>CACHE STRING &quot;Set C++ Compiler Flags&quot; FORCE</code>用来强制将参数写到CMakeCache.txt文件中。</p>
+<p>一旦设置了<code>CMAKE_CXX_FLAGS</code>或是<code>CMAKE_C_FLAGS</code>，定义将广播到该文件夹下的所有目标中（包含子文件夹）。现在更推荐使用<code>target_compile_definitions</code>。</p>
+<h3 id="设置CMake-Flag"><a href="#设置CMake-Flag" class="headerlink" title="设置CMake Flag"></a>设置CMake Flag</h3><p>采用<code>cmake .. -DCMAKE_CXX_FLAGS=&quot;-DEX3&quot;</code>添加CMake的flag。</p>
+<p>###</p>
 ]]></content>
       <tags>
         <tag>CMake</tag>
