@@ -1,6 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++_Primer_笔记</title>
+    <url>/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="第九章-内存模型和名称空间"><a href="#第九章-内存模型和名称空间" class="headerlink" title="第九章 内存模型和名称空间"></a>第九章 内存模型和名称空间</h2><h3 id="9-1-单独编译"><a href="#9-1-单独编译" class="headerlink" title="9.1 单独编译"></a>9.1 单独编译</h3><p>为了方便管理，一般我们将声明及定义放在不同的文件里。</p>
+<ul>
+<li>头文件：存放声明</li>
+<li>源代码文件：存放定义</li>
+</ul>
+<p>不要将<code>函数定义</code>及<code>变量声明</code>放到头文件中，这可能引起重复定义，一般将下列内容放在头文件中：</p>
+<ul>
+<li>函数声明</li>
+<li>使用#define或是const定义的常量</li>
+<li>struct声明</li>
+<li>类声明</li>
+<li>模版声明</li>
+<li>内联函数</li>
+</ul>
+<p>将struct放在头文件中是可以的，因为系统不为其创建变量。模版声明也是可以的，因为系统读到头文件里的模版声明时不编译其代码，而是用其来生成用户指定类型的函数定义。</p>
+<p>对于文件的引用，有两种方法：</p>
+<ul>
+<li>include&lt;&gt; 引用系统目录中的文件</li>
+<li>include”” 引用当前目录中的文件（用户自己创建的）</li>
+</ul>
+<p>注意：用ide时，不要去compile .h文件，应该compile .cpp文件，因为所有的h文件都被cpp文件include了，并且，不要在一个.cpp文件里include另一个.cpp文件。</p>
+<p><strong>编译源代码的过程：</strong></p>
+<p><img src="/" alt="IMG_0131" class="lazyload" data-src="/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/IMG_0131.jpg"></p>
+<ul>
+<li>首先将各种预处理指令，比如include替换成相应的文本，产生temp.cpp文件</li>
+<li>然后为每个translation unit创建一个.o的目标文件</li>
+<li>最后将.o文件、库代码以及启动码链接起来，生成可运行的a.out。</li>
+</ul>
+<p>注意：在写头文件时记得使用防卫式编程，以避免重复引用。</p>
+<p><strong>Trick：</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; a) &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用以上方法编程时，当cin读取到不为<code>q</code>的取值时，while循环都为true。</p>
+<h3 id="9-2-存储持续性，作用域和链接性"><a href="#9-2-存储持续性，作用域和链接性" class="headerlink" title="9.2 存储持续性，作用域和链接性"></a>9.2 存储持续性，作用域和链接性</h3><p><strong>持续性</strong>：何时存在于内存中？</p>
+<p><strong>作用域</strong>：在哪儿能访问到？</p>
+<p><strong>链接性</strong>：别的文件能不能访问到？</p>
+<p>不同的存储方案是通过存储的持续性，作用域和链接性描述的。</p>
+<p><strong>C++提供三种不同的存储方案：</strong></p>
+<ol>
+<li><strong>自动存储持续性</strong></li>
+</ol>
+<p>离开代码块时，内存自动被释放。</p>
+<ol start="2">
+<li><strong>静态存储持续性</strong></li>
+</ol>
+<p>以下两项的存储持续性都为静态(在程序的整个生命周期都存在)：</p>
+<ul>
+<li>函数外定义的变量</li>
+<li>static定义的变量</li>
+</ul>
+<ol start="3">
+<li><strong>动态存储持续性</strong></li>
+</ol>
+<p>使用new运算符分配，直到使用delete运算符释放内存。</p>
+<h4 id="9-2-1-作用域和链接"><a href="#9-2-1-作用域和链接" class="headerlink" title="9.2.1 作用域和链接"></a>9.2.1 作用域和链接</h4><p>作用域(scope)描述一个名称在translation unit中的多大范围内可见。</p>
+<ul>
+<li>作用域为局部的变量只在定义其的代码块中可用</li>
+<li>自动变量的作用域为局部</li>
+<li>函数原型作用域中使用的名称只在包含参数列表的括号中可用（所以函数原型中的各个参数的名称或者是否出现都不是很重要。）</li>
+</ul>
+<h4 id="9-2-2-自动存储持续性"><a href="#9-2-2-自动存储持续性" class="headerlink" title="9.2.2 自动存储持续性"></a>9.2.2 自动存储持续性</h4><p>函数中声明的参数和变量：</p>
+<ul>
+<li>存储持续性–&gt;自动</li>
+<li>链接性–&gt;没有</li>
+</ul>
+<p>如果一个局部变量的名称和一个全局的一样，则进入局部变量的代码块后，在该代码块内，全局的那个将被暂时“隐藏”。在出代码块后，全局的那个被恢复。</p>
+<p><img src="/" alt="IMG_0132" class="lazyload" data-src="/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/IMG_0132.jpg"></p>
+<p>C++11中的auto用于自动类型推断。</p>
+<ol>
+<li><strong>自动变量的初始化</strong></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> w;<span class="comment">//不初始化的自动变量</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">5</span>;<span class="comment">//使用常数初始化的自动变量</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>自动变量和栈</strong></li>
+</ol>
+<p><img src="/" alt="IMG_0133" class="lazyload" data-src="/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/IMG_0133.jpg"></p>
+<p>函数中的自动变量在使用时被押入栈，当函数运行完毕时，直接将栈顶指针指向未进入函数前的位置，相当于将进入函数后创建的自动变量都直接扔掉。</p>
+<ol start="3">
+<li><strong>寄存器变量</strong></li>
+</ol>
+<p>C++11前表明该变量被经常使用，建议编译器用cpu寄存器存储它，现在obsolete。</p>
+<h4 id="9-2-3-静态持续变量"><a href="#9-2-3-静态持续变量" class="headerlink" title="9.2.3 静态持续变量"></a>9.2.3 静态持续变量</h4><p>所有静态持续变量在整个程序执行期间都存在。</p>
+<p>C++为静态存储持续性变量提供了3种链接性：</p>
+<ol>
+<li>外部链接性（可在其它文件中访问）</li>
+</ol>
+<p>在代码块外部声明</p>
+<ol start="2">
+<li><p>内部链接性（只能在当前文件访问）</p>
+</li>
+<li><p>无链接性（只能在当前函数或代码块中访问）</p>
+</li>
+</ol>
+<p>在代码块内部声明</p>
+<p>编译器分配固定大小内存来存储所有静态变量。如果没有显式初始化静态变量，编译器自动将其置零。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> global = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> one_file = <span class="number">50</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span> <span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> in count = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>global可在别的文件中用extern访问，one_file因为加上了static，只能在当前文件被访问，count只能在func中被访问。另外，无论能不能被访问，global、one_file、count在整个程序执行期间都是存在的。</p>
+<p>以下是5种变量存储方式：</p>
+<p><img src="/" alt="IMG_0134" class="lazyload" data-src="/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/IMG_0134.jpg"></p>
+<p><strong>静态变量的初始化</strong></p>
+<p>静态初始化（在编译器处理translation unit的时候初始化）：</p>
+<ul>
+<li>零初始化</li>
+<li>常量表达式初始化</li>
+</ul>
+<p>动态初始化（在编译后初始化）</p>
+<h4 id="9-2-4-静态持续性、外部链接性"><a href="#9-2-4-静态持续性、外部链接性" class="headerlink" title="9.2.4 静态持续性、外部链接性"></a>9.2.4 静态持续性、外部链接性</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> up;<span class="comment">//定义</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> blem;<span class="comment">//在别处定义（声明一个外部变量）</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> gr = <span class="string">'Z'</span>;<span class="comment">//定义，因为其被初始化，导致分配空间。（定义一个全局变量并给初值）</span></span><br></pre></td></tr></table></figure>
+
+<p>当出现两个同名的变量时，假如都叫做warming,则在范围更小的代码块内使用::warming可以使得全局的warming不被局部的warming遮蔽。</p>
+<p>一般来说，我们尽量使用局部变量，这样可以防止不小心用到同名的全局变量，不过在写一些常量数据的时候，最好使用全局变量+const的组合。</p>
+]]></content>
+      <tags>
+        <tag>C++</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CMake基础</title>
     <url>/2020/04/13/CMake%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h3><p>该文件保存所有CMake命令，挡在shell中运行cmake时，它将寻找该txt文件，如果找不到，cmake将报错并退出。</p>
