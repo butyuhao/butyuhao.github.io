@@ -115,6 +115,43 @@
 
 <p>当出现两个同名的变量时，假如都叫做warming,则在范围更小的代码块内使用::warming可以使得全局的warming不被局部的warming遮蔽。</p>
 <p>一般来说，我们尽量使用局部变量，这样可以防止不小心用到同名的全局变量，不过在写一些常量数据的时候，最好使用全局变量+const的组合。</p>
+<h4 id="9-2-5-静态持续性、内部链接性"><a href="#9-2-5-静态持续性、内部链接性" class="headerlink" title="9.2.5 静态持续性、内部链接性"></a>9.2.5 静态持续性、内部链接性</h4><ol>
+<li>直接在函数外声明变量，该变量链接性为外部</li>
+<li>使用关键字extern来使用别的源文件中，链接性为外部的变量</li>
+<li>使用static将变量的链接性限定在代码块或本文件内。</li>
+</ol>
+<h4 id="9-2-6-静态存储持续性、无链接性"><a href="#9-2-6-静态存储持续性、无链接性" class="headerlink" title="9.2.6 静态存储持续性、无链接性"></a>9.2.6 静态存储持续性、无链接性</h4><p>在代码块中使用static创建变量，则该变量作用域在代码块中，持续性是程序的生命周期，且两次函数调用之间，该变量的值是不变的。</p>
+<p><strong>Trick:</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cin</span>.<span class="built_in">get</span>(数组， 数组大小)</span><br></pre></td></tr></table></figure>
+
+<p>采用以上方法，cin接收用户的输入，并将其存入数组中。并且，当用户输入超出数组大小时，其余字母留在缓冲区内，当字母数量不超过数组大小时，使用cin.get()得到的是’\n’。</p>
+<h4 id="9-2-7说明符和限定符"><a href="#9-2-7说明符和限定符" class="headerlink" title="9.2.7说明符和限定符"></a>9.2.7说明符和限定符</h4><p><strong>说明符</strong></p>
+<ul>
+<li>auto</li>
+<li>register</li>
+<li>static</li>
+<li>extern</li>
+<li>thread_local</li>
+</ul>
+<p>变量的生命周期与线程相同。</p>
+<ul>
+<li>mutable</li>
+</ul>
+<p>消除const的限制，使得某const中的变量能被修改。</p>
+<p><strong>限定符</strong></p>
+<ul>
+<li>const</li>
+</ul>
+<p>使用了const，不仅限定参数不能被修改，还将变量的链接性限制在了文件内。而这也是为什么const的变量可以被放在头文件中被一堆源文件引用的原因。虽然语句被插入每个源文件，但是链接性都在文件内，因此互不影响。而如果想要定义链接性为外部的const变量，应该加上extern。</p>
+<ul>
+<li>volatile</li>
+</ul>
+<p>当一个值被用到多次时，编译器可能自动优化，将该值放到cpu寄存器中而不是去寻找该值。但有时某个值其实是程序与外部硬件通讯的信号，那个值也可能被外部硬件改变。因此将其声明为volatile，防止编译器自动移动其位置。</p>
+<h4 id="9-2-8-函数和链接性"><a href="#9-2-8-函数和链接性" class="headerlink" title="9.2.8 函数和链接性"></a>9.2.8 函数和链接性</h4><ul>
+<li>在声明函数的时候使用extern来表明该函数是外部的</li>
+<li>使用static来修饰函数的声明及定义来表明函数的链接性是内部的。</li>
+</ul>
+<p>除了内联函数外的其它函数都只能被定义一遍。</p>
 ]]></content>
       <tags>
         <tag>C++</tag>
