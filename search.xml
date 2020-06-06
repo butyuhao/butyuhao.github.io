@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>爬虫入门总结</title>
+    <url>/2020/06/06/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h4 id="浏览器请求"><a href="#浏览器请求" class="headerlink" title="浏览器请求"></a>浏览器请求</h4><ul>
+<li>url<ul>
+<li>url=请求协议+网站域名+资源路径+参数</li>
+</ul>
+</li>
+<li>浏览器请求url地址<ul>
+<li>当前url对应响应+js+css+图片—&gt;elements中内容</li>
+<li>elements中内容可能与爬虫拿到的数据不同</li>
+</ul>
+</li>
+<li>当前url所对应的响应在哪里<ul>
+<li>从network中找到相应项目，点击response</li>
+</ul>
+</li>
+</ul>
+<h4 id="HTTP与HTTPS"><a href="#HTTP与HTTPS" class="headerlink" title="HTTP与HTTPS"></a>HTTP与HTTPS</h4><ul>
+<li>HTTP:超文本传输协议<ul>
+<li>明文形式传输</li>
+<li>效率高，不安全</li>
+</ul>
+</li>
+<li>HTTPS:HTTP+SSL<ul>
+<li>传输前加密，读取前解密 </li>
+<li>效率低，安全</li>
+</ul>
+</li>
+<li>HTTP协议之请求<ul>
+<li>HTTP请求行 GET XXX HTTP/ 1.1</li>
+<li>请求头：<ul>
+<li>User-agent：包含浏览器信息，有些网页不好爬的话可以考虑改成手机的UA</li>
+<li>Cookie：用于携带用户信息，每次请求会被带上发给对方浏览器，服务器可能根据该字段判断是否为爬虫</li>
+</ul>
+</li>
+<li>请求体:<ul>
+<li>携带数据</li>
+<li>get请求没有请求体</li>
+<li>post请求有请求体</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>HTTP协议之相应<ul>
+<li>响应头<ul>
+<li>Set-Cookie:服务通过该字段设置Cookie到本地</li>
+</ul>
+</li>
+<li>响应体<ul>
+<li>Url地址所对应的响应</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>C++_Primer_笔记</title>
     <url>/2020/05/18/C-Primer-%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="第九章-内存模型和名称空间"><a href="#第九章-内存模型和名称空间" class="headerlink" title="第九章 内存模型和名称空间"></a>第九章 内存模型和名称空间</h2><h3 id="9-1-单独编译"><a href="#9-1-单独编译" class="headerlink" title="9.1 单独编译"></a>9.1 单独编译</h3><p>为了方便管理，一般我们将声明及定义放在不同的文件里。</p>
